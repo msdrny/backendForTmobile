@@ -18,7 +18,7 @@ let express = require('express'),
 // )
 
 // Setting up port with express js
-const employeeRoute = require('../backend/routes/inventroy.route')
+const employeeRoute = require('../backendForTmobile/routes/inventroy.route')
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))

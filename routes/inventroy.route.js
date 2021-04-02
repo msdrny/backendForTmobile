@@ -77,8 +77,9 @@ async function toggle(alias) {
       
     }
     else{
-      await sleep(10000);
+      await sleep(3000);
       response= await  myPlug.powerOn()
+      await sleep(10000);
       if(myPlugForHub){await myPlugForHub.powerOn()}
     
     }
@@ -657,8 +658,8 @@ inventoryRoute.route('/getHackrfStatus').get((req, res) => {
 
 	
 	var SSH = require('simple-ssh');
-var command="ps -eo pid,time |grep $(ps ax  |grep hackrf  | awk '{ print $1; exit }') | awk '{print $2;}'"
-//var command="sh mesud.sh"
+//var command="echo $(stat --format=%Y /proc/$(ps ax  |grep hackrf  | awk '{ print $1; exit }'))"
+var command="sh getStatus.sh"
 var ssh = new SSH({
     host: '192.168.10.62',
     user: 'vpn',
@@ -667,7 +668,7 @@ var ssh = new SSH({
 
 ssh.exec(command, {
     out:  function(stdout) {
-      //ssh.end();
+     //console.log(stdout)
       res.status(200).json(stdout)
     }
 
@@ -685,11 +686,11 @@ ssh.on('error', function(err) {
 
     inventoryRoute.post("/startHackrfLoad",  (req, res,next) => {
 
-      // percantage=req.body.params.updates[0].value
-      // frequency=req.body.params.updates[1].value
-      // console.log(percantage,frequency)
+       percantage=req.body.params.updates[0].value
+       frequency=req.body.params.updates[1].value
+       console.log(percantage,frequency)
     var SSH = require('simple-ssh');
-    var command="nohup hackrf_transfer -c 127  -f 5820000000 -R -s 20000000 -a 1 -x 47 -l 40 -g 62 >/dev/null 2>&1 &  echo finish"
+    var command="nohup hackrf_transfer -c 127  -f "+frequency+"000000 -R -s 20000000 -a 1 -x 47 -l 40 -g 62 >/dev/null 2>&1 &  echo finish"
     var ssh = new SSH({
         host: '192.168.10.62',
         user: 'vpn',
@@ -718,7 +719,7 @@ ssh.on('error', function(err) {
 
     inventoryRoute.route('/stopHackrfLoad').get((req, res) => {
   
-      var command="pkill -9 hackrf ; echo finish"
+      var command="pkill -9 hackrf ;hackrf_spiflash -R; echo finish"
       var ssh = new SSH({
           host: '192.168.10.62',
           user: 'vpn',
