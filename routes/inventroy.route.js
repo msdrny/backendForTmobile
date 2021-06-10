@@ -41,6 +41,7 @@ const { consoleTestResultHandler } = require('tslint/lib/test');
 const TPLINK_USER = "mesut@iointel.com";
 const TPLINK_PASS = "Iointel2021";
 const TPLINK_TERM = "term";
+let Calendar = require('../models/Calendar')
 
 // var request = require('request')
 // , JSONStream = require('JSONStream')
@@ -1053,4 +1054,51 @@ module.exports = inventoryRoute;
       }
     }).lean()
 }
+
+inventoryRoute.route('/getAllCalendarList').get((req, res) => {
+  Calendar.find((error, data) => {
+    if (error) {
+      console.log(error)
+    } else {
+      res.json(data)
+    }
+  })
+})
+
+inventoryRoute.post("/mesud",  (request, response) => {
+
+  alias=request.body
+  // console.log(alias)
+  Calendar.insertMany(alias,(error, data) => {
+    if (error) {
+      response.status(500).json(error.message)
+    } else {
+      response.send("Successfully inserted into database")
+    }
+  })
+ 
+
+  
+
+});
+
+
+inventoryRoute.post("/deleteMesud",  (request, response) => {
+
+  alias=request.body
+  console.log(alias)
+  Calendar.deleteMany(alias,(error, data) => {
+    if (error) {
+      console.log(error)
+      response.status(500).json(error.message)
+    } else {
+      console.log("Successfully deleted into database")
+      response.send("Successfully deleted into database")
+    }
+  })
+ 
+
+  
+
+});
 

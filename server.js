@@ -4,18 +4,19 @@ let express = require('express'),
    cors = require('cors'),
    bodyParser = require('body-parser'),
    dbConfig = require('./database/db');
+   fs = require('fs');
 
 // Connecting with mongo db
-// mongoose.Promise = global.Promise;
-// mongoose.connect(dbConfig.db, {
-//    useNewUrlParser: true
-// }).then(() => {
-//       console.log('Database sucessfully connected')
-//    },
-//    error => {
-//       console.log('Database could not connected: ' + error)
-//    }
-// )
+mongoose.Promise = global.Promise;
+mongoose.connect(dbConfig.db, {
+   useNewUrlParser: true
+}).then(() => {
+      console.log('Database sucessfully connected')
+   },
+   error => {
+      console.log('Database could not connected: ' + error)
+   }
+)
 
 // Setting up port with express js
 const employeeRoute = require('../backendForTmobile/routes/inventroy.route')
@@ -27,10 +28,12 @@ app.use(express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
 app.use('/', express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
 app.use('/api', employeeRoute)
 
+var url = fs.readFileSync('url.txt', 'utf8');
+
 // Create port
 const port = process.env.PORT || 4000;
 
-const server = app.listen(port,'192.168.10.51', () => {
+const server = app.listen(port,url, () => {
 //   const server = app.listen(port,'10.0.0.99', () => {  
 console.log('Connected to port ' + port)
 })
