@@ -2,21 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Define collection and schema
-let Calendar = new Schema({
+let Comment = new Schema({
    id: {
       type: Number
    },
    title: {
       type: String
    },
-   color: new Schema({
-
-      primary  :{type:String},
-      secondary :{type:String}
-
-   })
-      
-   ,
    start: {
       type: Date
    },
@@ -28,8 +20,8 @@ let Calendar = new Schema({
       type: Boolean
    },
 }, {
-   collection: 'calendar'
+   collection: 'comments'
 })
 
-module.exports = mongoose.model('Calendar', Calendar)
+module.exports = mongoose.model('Comment', Comment)
 

@@ -1130,7 +1130,45 @@ inventoryRoute.post("/mesud",  (request, response) => {
 });
 
 
+
+
 inventoryRoute.post("/deleteMesud",  (request, response) => {
+
+  alias=request.body
+  console.log(alias)
+  Calendar.deleteMany(alias,(error, data) => {
+    if (error) {
+      console.log(error)
+      response.status(500).json(error.message)
+    } else {
+      console.log("Successfully deleted into database")
+      response.send("Successfully deleted into database")
+    }
+  })
+ 
+
+  
+
+});
+
+inventoryRoute.post("/addComment",  (request, response) => {
+
+  alias=request.body
+  // console.log(alias)
+  Calendar.insertMany(alias,(error, data) => {
+    if (error) {
+      response.status(500).json(error.message)
+    } else {
+      response.send("Successfully inserted into database")
+    }
+  })
+ 
+
+  
+
+});
+
+inventoryRoute.post("/deleteComment",  (request, response) => {
 
   alias=request.body
   console.log(alias)
