@@ -41,7 +41,8 @@ const { consoleTestResultHandler } = require('tslint/lib/test');
 const TPLINK_USER = "mesut@iointel.com";
 const TPLINK_PASS = "Iointel2021";
 const TPLINK_TERM = "term";
-let Calendar = require('../models/Calendar')
+let Calendar = require('../models/Calendar');
+const TestMetaData = require('../models/TestMetaData');
 
 // var request = require('request')
 // , JSONStream = require('JSONStream')
@@ -685,6 +686,8 @@ ssh.on('error', function(err) {
     
   })
 
+
+
     inventoryRoute.post("/startHackrfLoad",  (req, res,next) => {
 
        percantage=req.body.params.updates[0].value
@@ -750,6 +753,50 @@ ssh.on('error', function(err) {
 
         
       })
+
+
+      inventoryRoute.route('/getTestStatus').get((req, res) => {
+  
+
+	
+        var SSH = require('simple-ssh');
+      //var command="echo $(stat --format=%Y /proc/$(ps ax  |grep hackrf  | awk '{ print $1; exit }'))"
+      var command="sh getTestStatus.sh"
+      var ssh = new SSH({
+          host: '192.168.10.107',
+          user: 'testhouse',
+          pass: 'testhouse2021'
+      });
+      
+      ssh.exec(command, {
+          out:  function(stdout) {
+           //console.log(stdout)
+            res.status(200).json(stdout)
+          }
+      
+      
+      }).start();
+      ssh.on('error', function(err) {
+          console.log('Oops, something went wrong.');
+          console.log(err);
+          ssh.end();
+      });
+      
+      
+          
+        })
+
+// Get All Inventorys
+inventoryRoute.route('/getTestMetaData').get((req, res) => {
+  TestMetaData.findOne((error, data) => {
+    if (error) {
+      console.log(error)
+      return 0
+    } else {
+      res.json(data)
+    }
+  }).sort("_id")
+})
 
 inventoryRoute.route('/distinctThroughput/').get((req, res) => {
   Throughput.distinct('id',(error, data) => {
