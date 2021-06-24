@@ -42,6 +42,7 @@ const TPLINK_USER = "mesut@iointel.com";
 const TPLINK_PASS = "Iointel2021";
 const TPLINK_TERM = "term";
 let Calendar = require('../models/Calendar');
+let Comment = require('../models/Comment');
 const TestMetaData = require('../models/TestMetaData');
 
 // var request = require('request')
@@ -1155,10 +1156,11 @@ inventoryRoute.post("/addComment",  (request, response) => {
 
   alias=request.body
   // console.log(alias)
-  Calendar.insertMany(alias,(error, data) => {
+  Comment.insertMany(alias,(error, data) => {
     if (error) {
       response.status(500).json(error.message)
     } else {
+      console.log(alias)
       response.send("Successfully inserted into database")
     }
   })
@@ -1172,7 +1174,7 @@ inventoryRoute.post("/deleteComment",  (request, response) => {
 
   alias=request.body
   console.log(alias)
-  Calendar.deleteMany(alias,(error, data) => {
+  Comment.deleteMany(alias,(error, data) => {
     if (error) {
       console.log(error)
       response.status(500).json(error.message)
@@ -1187,3 +1189,12 @@ inventoryRoute.post("/deleteComment",  (request, response) => {
 
 });
 
+inventoryRoute.route('/getAllComments').get((req, res) => {
+  Comment.find((error, data) => {
+    if (error) {
+      console.log(error)
+    } else {
+      res.json(data)
+    }
+  }).sort({"date":-1})
+})
