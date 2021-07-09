@@ -20,6 +20,8 @@
     "fast-json-stringify": "^2.2.3",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.18",
+    "mso-pdf": "^1.0.2",
+    "multer": "^1.4.2",
     "simple-ssh": "^1.0.0",
     "ssh2": "^0.8.9",
     "ssh2-streams": "file:node_modules/ssh2-streams",

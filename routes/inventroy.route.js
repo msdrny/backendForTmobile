@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const inventoryRoute = express.Router();
+const controller = require("../controller/file.controller");
 var SSH = require('simple-ssh');
 // Inventory model
 let Inventory = require('../models/Inventory');
@@ -1198,3 +1199,8 @@ inventoryRoute.route('/getAllComments').get((req, res) => {
     }
   }).sort({"date":-1})
 })
+
+
+  inventoryRoute.get("/files", controller.getListFiles);
+  inventoryRoute.get("/files/:name", controller.download);
+  inventoryRoute.post("/upload", controller.upload);

@@ -28,11 +28,12 @@ app.use(express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
 app.use('/', express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
 app.use('/api', employeeRoute)
 
-var url = fs.readFileSync('url.txt', 'utf8');
-
+var fullUrl = fs.readFileSync('url.txt', 'utf8');
+var url = fullUrl.split(":")[0]
+var portFromTxt = fullUrl.split(":")[1]
 // Create port
-const port = process.env.PORT || 4000;
-
+const port = process.env.PORT || portFromTxt;
+global.__basedir = __dirname;
 const server = app.listen(port,url, () => {
 //   const server = app.listen(port,'10.0.0.99', () => {  
 console.log('Connected to port ' + port)
