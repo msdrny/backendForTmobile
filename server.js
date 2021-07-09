@@ -8,25 +8,25 @@ let express = require('express'),
 
 // Connecting with mongo db
 mongoose.Promise = global.Promise;
-mongoose.connect(dbConfig.db, {
-   useNewUrlParser: true
-}).then(() => {
-      console.log('Database sucessfully connected')
-   },
-   error => {
-      console.log('Database could not connected: ' + error)
-   }
-)
+// mongoose.connect(dbConfig.db, {
+//    useNewUrlParser: true
+// }).then(() => {
+//       console.log('Database sucessfully connected')
+//    },
+//    error => {
+//       console.log('Database could not connected: ' + error)
+//    }
+// )
 
 // Setting up port with express js
-const employeeRoute = require('../backendForTmobile/routes/inventroy.route')
+const testHouseRoute = require('../backendForTmobile/routes/inventroy.route')
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 app.use(cors()); 
-app.use(express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
-app.use('/', express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
-app.use('/api', employeeRoute)
+// app.use(express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
+// app.use('/', express.static(path.join(__dirname, 'dist/mean-stack-crud-app')));
+app.use('/api', testHouseRoute)
 
 var fullUrl = fs.readFileSync('url.txt', 'utf8');
 var url = fullUrl.split(":")[0]

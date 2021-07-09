@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const inventoryRoute = express.Router();
+const testHouseRoute = express.Router();
 const controller = require("../controller/file.controller");
 var SSH = require('simple-ssh');
 // Inventory model
@@ -98,7 +98,7 @@ async function toggle(alias) {
 }
 
 
-inventoryRoute.get("/deviceList", async (request, response,next) => {
+testHouseRoute.get("/deviceList", async (request, response,next) => {
 
  try{    
    
@@ -144,7 +144,7 @@ inventoryRoute.get("/deviceList", async (request, response,next) => {
 
 });
 
-inventoryRoute.post("/toggleSmartPlug", async (request, response) => {
+testHouseRoute.post("/toggleSmartPlug", async (request, response) => {
   try{
   alias=request.body.params.updates[0].value
   res=await toggle(alias)
@@ -158,7 +158,7 @@ inventoryRoute.post("/toggleSmartPlug", async (request, response) => {
 });
 
 
-inventoryRoute.post("/onPlug/:alias", async (request, response) => {
+testHouseRoute.post("/onPlug/:alias", async (request, response) => {
   try{
     const tplink = await login(TPLINK_USER, TPLINK_PASS, TPLINK_TERM);
     let dl = await tplink.getDeviceList();
@@ -174,7 +174,7 @@ inventoryRoute.post("/onPlug/:alias", async (request, response) => {
 
 });
 
-inventoryRoute.post("/offPlug/:alias", async (request, response) => {
+testHouseRoute.post("/offPlug/:alias", async (request, response) => {
   try{
     const tplink = await login(TPLINK_USER, TPLINK_PASS, TPLINK_TERM);
     let dl = await tplink.getDeviceList();
@@ -195,7 +195,7 @@ inventoryRoute.post("/offPlug/:alias", async (request, response) => {
 
 
 ////////Start HeatMap
-inventoryRoute.route('/rssi').get((req, res) => {
+testHouseRoute.route('/rssi').get((req, res) => {
   
   RSSI.find((error, data) => {
     if (error) {
@@ -211,7 +211,7 @@ inventoryRoute.route('/rssi').get((req, res) => {
 
 
 ////////Start HeatMap
-inventoryRoute.route('/heatmap/:id').get((req, res) => {
+testHouseRoute.route('/heatmap/:id').get((req, res) => {
   
   Heatmap.find({id:req.params.id},(error, data) => {
     if (error) {
@@ -227,7 +227,7 @@ inventoryRoute.route('/heatmap/:id').get((req, res) => {
 
 ////////Start Maximum Connection 
 
-inventoryRoute.route('/maximumConnection/').get((req, res) => {
+testHouseRoute.route('/maximumConnection/').get((req, res) => {
   
   MaximumConnection.distinct('id',(error, data) => {
     if (error) {
@@ -238,7 +238,7 @@ inventoryRoute.route('/maximumConnection/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/maximumConnection/:id').get((req, res) => {
+testHouseRoute.route('/maximumConnection/:id').get((req, res) => {
   
   MaximumConnection.find({'id':req.params.id},(error, data) => {
     if (error) {
@@ -255,7 +255,7 @@ inventoryRoute.route('/maximumConnection/:id').get((req, res) => {
 //Start HIG Download
 
 
-inventoryRoute.route('/higAcsDownload/:id').get((req, res) => {
+testHouseRoute.route('/higAcsDownload/:id').get((req, res) => {
   
   HigAcs.find({'testId':req.params.id,time:{$gte: new Date("2020-07-31T07:23:33.000Z") , $lt: new Date("2020-07-31T07:38:40.000Z")}},(error, data) => {
     if (error) {
@@ -267,7 +267,7 @@ inventoryRoute.route('/higAcsDownload/:id').get((req, res) => {
 })
 
 
-inventoryRoute.route('/speedTestHigDownload/:id').get((req, res) => {
+testHouseRoute.route('/speedTestHigDownload/:id').get((req, res) => {
   
   SpeedTestHIGDownload.find({'id':req.params.id,time:{$gte: new Date("2020-07-31T07:23:33.000Z") , $lt: new Date("2020-07-31T07:38:40.000Z")}},(error, data) => {
     if (error) {
@@ -278,7 +278,7 @@ inventoryRoute.route('/speedTestHigDownload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/distinct/higDownload/').get((req, res) => {
+testHouseRoute.route('/distinct/higDownload/').get((req, res) => {
   HIGDownload.distinct('testid',(error, data) => {
     if (error) {
       return next(error)
@@ -288,7 +288,7 @@ inventoryRoute.route('/distinct/higDownload/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/higCqiDownload/:id').get((req, res) => {
+testHouseRoute.route('/higCqiDownload/:id').get((req, res) => {
   HigCQIDownload.find({'testid':req.params.id},(error, data) => {
     if (error) {
       return next(error)
@@ -298,7 +298,7 @@ inventoryRoute.route('/higCqiDownload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/higDownload/:id').get((req, res) => {
+testHouseRoute.route('/higDownload/:id').get((req, res) => {
   
   HIGDownload.find({'testid':req.params.id},(error, data) => {
     if (error) {
@@ -317,7 +317,7 @@ inventoryRoute.route('/higDownload/:id').get((req, res) => {
 //Start HIG Upload
 
 
-inventoryRoute.route('/higAcs/:id').get((req, res) => {
+testHouseRoute.route('/higAcs/:id').get((req, res) => {
   
   HigAcs.find({'testId':req.params.id,time:{$gte: new Date("2020-07-31T06:18:44.000Z") , $lt: new Date("2020-07-31T06:35:40.000Z")}},(error, data) => {
     if (error) {
@@ -329,7 +329,7 @@ inventoryRoute.route('/higAcs/:id').get((req, res) => {
 })
 
 
-inventoryRoute.route('/speedTesthigUpload/:id').get((req, res) => {
+testHouseRoute.route('/speedTesthigUpload/:id').get((req, res) => {
   
   SpeedTestHIGUpload.find({'id':req.params.id,time:{$gte: new Date("2020-07-31T06:18:44.000Z") , $lt: new Date("2020-07-31T06:35:40.000Z")}},(error, data) => {
     if (error) {
@@ -341,7 +341,7 @@ inventoryRoute.route('/speedTesthigUpload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/distinct/higUpload/').get((req, res) => {
+testHouseRoute.route('/distinct/higUpload/').get((req, res) => {
   HIGUpload.distinct('testid',{date:{$gte: new Date("2020-07-31T06:18:44.000Z") , $lt: new Date("2020-07-31T06:35:40.000Z")}},(error, data) => {
     if (error) {
       return next(error)
@@ -351,7 +351,7 @@ inventoryRoute.route('/distinct/higUpload/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/higcqiUpload/:id').get((req, res) => {
+testHouseRoute.route('/higcqiUpload/:id').get((req, res) => {
   HigCQIUpload.find({'testid':req.params.id,date:{$gte: new Date("2020-07-31T06:18:44.000Z") , $lt: new Date("2020-07-31T06:35:40.000Z")}},(error, data) => {
     if (error) {
       return next(error)
@@ -361,7 +361,7 @@ inventoryRoute.route('/higcqiUpload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/higUpload/:id').get((req, res) => {
+testHouseRoute.route('/higUpload/:id').get((req, res) => {
   var rs = Readable();
   
   HIGUpload.find({'testid':req.params.id,date:{$gte: new Date("2020-07-31T06:18:44.000Z") , $lt: new Date("2020-07-31T06:35:40.000Z")}},(error, data) => {
@@ -386,7 +386,7 @@ inventoryRoute.route('/higUpload/:id').get((req, res) => {
 
 //Start EIG Download
 
-inventoryRoute.route('/eigAcsDownload/:id').get((req, res) => {
+testHouseRoute.route('/eigAcsDownload/:id').get((req, res) => {
   
   EigAcs.find({'testId':req.params.id},(error, data) => {
     if (error) {
@@ -397,7 +397,7 @@ inventoryRoute.route('/eigAcsDownload/:id').get((req, res) => {
   }).sort({time:1})
 })
 
-inventoryRoute.route('/speedTestEigDownload/:id').get((req, res) => {
+testHouseRoute.route('/speedTestEigDownload/:id').get((req, res) => {
   var rs = Readable();
   
   SpeedTestEIGDownload.find({'id':req.params.id},(error, data) => {
@@ -409,7 +409,7 @@ inventoryRoute.route('/speedTestEigDownload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/distinct/eigDownload/').get((req, res) => {
+testHouseRoute.route('/distinct/eigDownload/').get((req, res) => {
   EIGDownload.distinct('testid',(error, data) => {
     if (error) {
       return next(error)
@@ -419,7 +419,7 @@ inventoryRoute.route('/distinct/eigDownload/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/eigCqiDownload/:id').get((req, res) => {
+testHouseRoute.route('/eigCqiDownload/:id').get((req, res) => {
   EigCQIDownload.find({'testid':req.params.id},(error, data) => {
     if (error) {
       return next(error)
@@ -429,7 +429,7 @@ inventoryRoute.route('/eigCqiDownload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/eigDownload/:id').get((req, res) => {
+testHouseRoute.route('/eigDownload/:id').get((req, res) => {
   var rs = Readable();
   
   EIGDownload.find({'testid':req.params.id},(error, data) => {
@@ -448,7 +448,7 @@ inventoryRoute.route('/eigDownload/:id').get((req, res) => {
 
 //Start EIG Upload
 
-inventoryRoute.route('/eigAcs/:id').get((req, res) => {
+testHouseRoute.route('/eigAcs/:id').get((req, res) => {
   
   EigAcs.find({'testId':req.params.id},(error, data) => {
     if (error) {
@@ -458,7 +458,7 @@ inventoryRoute.route('/eigAcs/:id').get((req, res) => {
     }
   }).sort({time:1})
 })
-inventoryRoute.route('/speedTestEigUpload/:id').get((req, res) => {
+testHouseRoute.route('/speedTestEigUpload/:id').get((req, res) => {
   var rs = Readable();
   
   SpeedTestEIGUpload.find({'id':req.params.id},(error, data) => {
@@ -470,7 +470,7 @@ inventoryRoute.route('/speedTestEigUpload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/distinct/eigUpload/').get((req, res) => {
+testHouseRoute.route('/distinct/eigUpload/').get((req, res) => {
   EIGUpload.distinct('testid',(error, data) => {
     if (error) {
       return next(error)
@@ -480,7 +480,7 @@ inventoryRoute.route('/distinct/eigUpload/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/eigcqiUpload/:id').get((req, res) => {
+testHouseRoute.route('/eigcqiUpload/:id').get((req, res) => {
   EigCQIUpload.find({'testid':req.params.id},(error, data) => {
     if (error) {
       return next(error)
@@ -490,7 +490,7 @@ inventoryRoute.route('/eigcqiUpload/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/eigUpload/:id').get((req, res) => {
+testHouseRoute.route('/eigUpload/:id').get((req, res) => {
   var rs = Readable();
   
   EIGUpload.find({'testid':req.params.id},(error, data) => {
@@ -510,7 +510,7 @@ inventoryRoute.route('/eigUpload/:id').get((req, res) => {
 //End EIG Upload
 
 
-inventoryRoute.route('/secondry/distinct/testid').get((req, res) => {
+testHouseRoute.route('/secondry/distinct/testid').get((req, res) => {
   Secondary.distinct('id',(error, data) => {
     if (error) {
       return next(error)
@@ -521,7 +521,7 @@ inventoryRoute.route('/secondry/distinct/testid').get((req, res) => {
 })
 
 
-inventoryRoute.route('/secondary/distinctByHost/:id').get((req, res) => {
+testHouseRoute.route('/secondary/distinctByHost/:id').get((req, res) => {
   Secondary.distinct('host',{id:req.params.id },(error, data) => {
     if (error) {
       return next(error)
@@ -531,7 +531,7 @@ inventoryRoute.route('/secondary/distinctByHost/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/secondary/distinctByPort/:id/:host').get((req, res) => {
+testHouseRoute.route('/secondary/distinctByPort/:id/:host').get((req, res) => {
   Secondary.distinct('port',{id:req.params.id,host:req.params.host},(error, data) => {
     if (error) {
       return next(error)
@@ -541,7 +541,7 @@ inventoryRoute.route('/secondary/distinctByPort/:id/:host').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/secondary/port/:id/:host/:port').get((req, res) => {
+testHouseRoute.route('/secondary/port/:id/:host/:port').get((req, res) => {
   var integer = parseInt(req.params.port)
   Secondary.find({id: req.params.id,host:req.params.host,port:integer},(error, data) => {
     if (error) {
@@ -552,7 +552,7 @@ inventoryRoute.route('/secondary/port/:id/:host/:port').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/secondary/:id').get((req, res) => {
+testHouseRoute.route('/secondary/:id').get((req, res) => {
   Secondary.find({id: req.params.id},(error, data) => {
     if (error) {
       return next(error)
@@ -562,7 +562,7 @@ inventoryRoute.route('/secondary/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/user/:mail/:password').get((req, res) => {
+testHouseRoute.route('/user/:mail/:password').get((req, res) => {
   Users.find({mail: req.params.mail,password: req.params.password},(error, data) => {
     if (error) {
       return next(error)
@@ -572,7 +572,7 @@ inventoryRoute.route('/user/:mail/:password').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/sidebar/').get((req, res) => {
+testHouseRoute.route('/sidebar/').get((req, res) => {
   TreeViewItem.find((error, data) => {
     if (error) {
       return next(error)
@@ -582,7 +582,7 @@ inventoryRoute.route('/sidebar/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/rsrq/').get((req, res) => {
+testHouseRoute.route('/rsrq/').get((req, res) => {
   rsrq.find((error, data) => {
     if (error) {
       return next(error)
@@ -593,7 +593,7 @@ inventoryRoute.route('/rsrq/').get((req, res) => {
 })
 
 
-inventoryRoute.route('/rsrp/').get((req, res) => {
+testHouseRoute.route('/rsrp/').get((req, res) => {
   rsrp.find((error, data) => {
     if (error) {
       return next(error)
@@ -604,7 +604,7 @@ inventoryRoute.route('/rsrp/').get((req, res) => {
 })
 
 
-inventoryRoute.route('/cqi/').get((req, res) => {
+testHouseRoute.route('/cqi/').get((req, res) => {
   cqi.find((error, data) => {
     if (error) {
       return next(error)
@@ -615,7 +615,7 @@ inventoryRoute.route('/cqi/').get((req, res) => {
 })
 
 
-inventoryRoute.route('/speedTest/').get((req, res) => {
+testHouseRoute.route('/speedTest/').get((req, res) => {
   speedTest.find((error, data) => {
     if (error) {
       return next(error)
@@ -626,7 +626,7 @@ inventoryRoute.route('/speedTest/').get((req, res) => {
 })
 
 
-inventoryRoute.route('/mqtt/').get((req, res) => {
+testHouseRoute.route('/mqtt/').get((req, res) => {
   Mqtt.find((error, data) => {
     if (error) {
       return next(error)
@@ -637,7 +637,7 @@ inventoryRoute.route('/mqtt/').get((req, res) => {
 })
 
 
-inventoryRoute.route('/ssh').get((req, res) => {
+testHouseRoute.route('/ssh').get((req, res) => {
   
 //return res; 
   var ssh = new SSH({
@@ -657,7 +657,7 @@ inventoryRoute.route('/ssh').get((req, res) => {
   
 })
 
-inventoryRoute.route('/getHackrfStatus').get((req, res) => {
+testHouseRoute.route('/getHackrfStatus').get((req, res) => {
   
 
 	
@@ -690,7 +690,7 @@ ssh.on('error', function(err) {
 
 
 
-    inventoryRoute.post("/startHackrfLoad",  (req, res,next) => {
+    testHouseRoute.post("/startHackrfLoad",  (req, res,next) => {
 
        percantage=req.body.params.updates[0].value
        frequency=req.body.params.updates[1].value
@@ -723,7 +723,7 @@ ssh.on('error', function(err) {
       
     })
 
-    inventoryRoute.route('/stopHackrfLoad').get((req, res) => {
+    testHouseRoute.route('/stopHackrfLoad').get((req, res) => {
   
       var command="pkill -9 hackrf ;hackrf_spiflash -R; echo finish"
       var ssh = new SSH({
@@ -757,7 +757,7 @@ ssh.on('error', function(err) {
       })
 
 
-      inventoryRoute.route('/getTestStatus').get((req, res) => {
+      testHouseRoute.route('/getTestStatus').get((req, res) => {
   
 
 	
@@ -789,7 +789,7 @@ ssh.on('error', function(err) {
         })
 
 // Get All Inventorys
-inventoryRoute.route('/getTestMetaData').get((req, res) => {
+testHouseRoute.route('/getTestMetaData').get((req, res) => {
   TestMetaData.findOne((error, data) => {
     if (error) {
       console.log(error)
@@ -800,7 +800,7 @@ inventoryRoute.route('/getTestMetaData').get((req, res) => {
   }).sort("_id")
 })
 
-inventoryRoute.route('/distinctThroughput/').get((req, res) => {
+testHouseRoute.route('/distinctThroughput/').get((req, res) => {
   Throughput.distinct('id',(error, data) => {
     if (error) {
       return next(error)
@@ -810,7 +810,7 @@ inventoryRoute.route('/distinctThroughput/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/throughput/:id').get((req, res) => {
+testHouseRoute.route('/throughput/:id').get((req, res) => {
 
   Throughput.find({id: req.params.id},(error, data) => {
     if (error) {
@@ -822,7 +822,7 @@ inventoryRoute.route('/throughput/:id').get((req, res) => {
 })
 
 
-inventoryRoute.route('/distinctMaximum/:id').get((req, res) => {
+testHouseRoute.route('/distinctMaximum/:id').get((req, res) => {
   Maximum.distinct(req.params.id,(error, data) => {
     if (error) {
       return next(error)
@@ -833,7 +833,7 @@ inventoryRoute.route('/distinctMaximum/:id').get((req, res) => {
 })
 
 
-inventoryRoute.route('/distinctMaximumById/:id/:brand').get((req, res) => {
+testHouseRoute.route('/distinctMaximumById/:id/:brand').get((req, res) => {
   Maximum.distinct(req.params.id,{id:req.params.brand },(error, data) => {
     if (error) {
       return next(error)
@@ -844,7 +844,7 @@ inventoryRoute.route('/distinctMaximumById/:id/:brand').get((req, res) => {
 })
 
 
-inventoryRoute.route('/brand/:id').get((req, res) => {
+testHouseRoute.route('/brand/:id').get((req, res) => {
 
   Maximum.find({brand: req.params.id},(error, data) => {
     if (error) {
@@ -855,7 +855,7 @@ inventoryRoute.route('/brand/:id').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/count/:id').get((req, res) => {
+testHouseRoute.route('/count/:id').get((req, res) => {
 
   Maximum.count({brand: req.params.id},(error, data) => {
     if (error) {
@@ -869,7 +869,7 @@ inventoryRoute.route('/count/:id').get((req, res) => {
 
 
 // Add Inventory
-inventoryRoute.route('/create').post((req, res, next) => {
+testHouseRoute.route('/create').post((req, res, next) => {
   Inventory.create(req.body, (error, data) => {
     if (error) {
       return next(error)
@@ -880,7 +880,7 @@ inventoryRoute.route('/create').post((req, res, next) => {
 });
 
 // Get All Inventorys
-inventoryRoute.route('/').get((req, res) => {
+testHouseRoute.route('/').get((req, res) => {
   Inventory.find((error, data) => {
     if (error) {
       return next(error)
@@ -892,7 +892,7 @@ inventoryRoute.route('/').get((req, res) => {
 
 
 // Get All Inventorys
-inventoryRoute.route('/distinct/:id').get((req, res) => {
+testHouseRoute.route('/distinct/:id').get((req, res) => {
   Inventory.distinct(req.params.id,(error, data) => {
     if (error) {
       return next(error)
@@ -905,7 +905,7 @@ inventoryRoute.route('/distinct/:id').get((req, res) => {
 
 //Backhaul//
 
-inventoryRoute.route('/backhaulTestId').get((req, res) => {
+testHouseRoute.route('/backhaulTestId').get((req, res) => {
   Backhaul.distinct('testId',(error, data) => {
     if (error) {
       return next(error)
@@ -916,7 +916,7 @@ inventoryRoute.route('/backhaulTestId').get((req, res) => {
 })
 
 
-inventoryRoute.route('/backhaulHost/:testId').get((req, res) => {
+testHouseRoute.route('/backhaulHost/:testId').get((req, res) => {
   Backhaul.distinct('host',{testId: req.params.testId},(error, data) => {
     if (error) {
       return next(error)
@@ -926,7 +926,7 @@ inventoryRoute.route('/backhaulHost/:testId').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/backhaulPort/:id/:host/:testId').get((req, res) => {
+testHouseRoute.route('/backhaulPort/:id/:host/:testId').get((req, res) => {
   Backhaul.distinct(req.params.id,{host:req.params.host,testId: req.params.testId},(error, data) => {
     if (error) {
       return next(error)
@@ -937,7 +937,7 @@ inventoryRoute.route('/backhaulPort/:id/:host/:testId').get((req, res) => {
 })
 
 
-inventoryRoute.route('/backhaul/:port/:id/:testId').get((req, res) => {
+testHouseRoute.route('/backhaul/:port/:id/:testId').get((req, res) => {
   var integer = parseInt(req.params.id)
   Backhaul.find({host:req.params.port,port: integer,testId:req.params.testId},(error, data) => {
     if (error) {
@@ -950,7 +950,7 @@ inventoryRoute.route('/backhaul/:port/:id/:testId').get((req, res) => {
 
 //Backhaul
 
-inventoryRoute.route('/host/:id/:host').get((req, res) => {
+testHouseRoute.route('/host/:id/:host').get((req, res) => {
   var cursor=Inventory.find({testId:req.params.id,host: req.params.host}).lean().stream()
   .pipe(JSONStream.stringify())
   .pipe(res.type('json'))
@@ -958,7 +958,7 @@ inventoryRoute.route('/host/:id/:host').get((req, res) => {
   
 })
 
-inventoryRoute.route('/host/:id/').get((req, res) => {
+testHouseRoute.route('/host/:id/').get((req, res) => {
 
 
   Inventory.find({testId:req.params.id}).lean().cursor()
@@ -979,7 +979,7 @@ inventoryRoute.route('/host/:id/').get((req, res) => {
  })
 
 
-inventoryRoute.route('/distinctTestId/').get((req, res) => {
+testHouseRoute.route('/distinctTestId/').get((req, res) => {
   Inventory.distinct('testId',(error, data) => {
     if (error) {
       return next(error)
@@ -989,7 +989,7 @@ inventoryRoute.route('/distinctTestId/').get((req, res) => {
   })
 })
 
-inventoryRoute.route('/testId/:id').get((req, res) => {
+testHouseRoute.route('/testId/:id').get((req, res) => {
   Inventory.distinct('host',{testId:req.params.id},(error, data) => {
     if (error) {
       return next(error)
@@ -999,7 +999,7 @@ inventoryRoute.route('/testId/:id').get((req, res) => {
   }).sort()
 })
 
-inventoryRoute.route('/testId/:id').get((req, res) => {
+testHouseRoute.route('/testId/:id').get((req, res) => {
   Inventory.distinct('host',{testId:req.params.id},(error, data) => {
     if (error) {
       return next(error)
@@ -1009,7 +1009,7 @@ inventoryRoute.route('/testId/:id').get((req, res) => {
   }).sort()
 })
 
-inventoryRoute.route('/aggregatedSum/:id').get((req, res) => {
+testHouseRoute.route('/aggregatedSum/:id').get((req, res) => {
   Inventory.aggregate([ {$match:{testId:req.params.id}},{$group:{"_id":{time:"$time"},total:{"$sum":"$bits_per_second"}}},{$sort:{"_id.time":1}} ],(error, data) => {
     if (error) {
       return next(error)
@@ -1020,7 +1020,7 @@ inventoryRoute.route('/aggregatedSum/:id').get((req, res) => {
 })
 
 
-inventoryRoute.route('/aggregatedConnection/:id').get((req, res) => {
+testHouseRoute.route('/aggregatedConnection/:id').get((req, res) => {
   Inventory.aggregate([ {$match:{testId:req.params.id}},{$group:{"_id":{time:"$time"},total:{"$sum":1}}},{$sort:{"_id.time":1}}],(error, data) => {
     if (error) {
       return next(error)
@@ -1031,7 +1031,7 @@ inventoryRoute.route('/aggregatedConnection/:id').get((req, res) => {
 })
 
 
-inventoryRoute.route('/aggregatedAvg/:id').get((req, res) => {
+testHouseRoute.route('/aggregatedAvg/:id').get((req, res) => {
   Inventory.aggregate([ {$match:{testId:req.params.id}},{$group:{"_id":"$host",total:{"$sum":1}}}],(error, data) => {
     if (error) {
       return next(error)
@@ -1049,7 +1049,7 @@ inventoryRoute.route('/aggregatedAvg/:id').get((req, res) => {
 
 
 // Get single Inventory
-inventoryRoute.route('/read/:id').get((req, res) => {
+testHouseRoute.route('/read/:id').get((req, res) => {
   Inventory.findById(req.params.id, (error, data) => {
     if (error) {
       return next(error)
@@ -1061,7 +1061,7 @@ inventoryRoute.route('/read/:id').get((req, res) => {
 
 
 // Update Inventory
-inventoryRoute.route('/update/:id').put((req, res, next) => {
+testHouseRoute.route('/update/:id').put((req, res, next) => {
   Inventory.findByIdAndUpdate(req.params.id, {
     $set: req.body
   }, (error, data) => {
@@ -1076,7 +1076,7 @@ inventoryRoute.route('/update/:id').put((req, res, next) => {
 })
 
 // Delete Inventory
-inventoryRoute.route('/delete/:id').delete((req, res, next) => {
+testHouseRoute.route('/delete/:id').delete((req, res, next) => {
   Inventory.findOneAndRemove(req.params.id, (error, data) => {
     if (error) {
       return next(error);
@@ -1087,7 +1087,7 @@ inventoryRoute.route('/delete/:id').delete((req, res, next) => {
     }
   })
 })
-module.exports = inventoryRoute;
+module.exports = testHouseRoute;
 
 
  function start() {
@@ -1104,7 +1104,7 @@ module.exports = inventoryRoute;
     }).lean()
 }
 
-inventoryRoute.route('/getAllCalendarList').get((req, res) => {
+testHouseRoute.route('/getAllCalendarList').get((req, res) => {
   Calendar.find((error, data) => {
     if (error) {
       console.log(error)
@@ -1114,7 +1114,7 @@ inventoryRoute.route('/getAllCalendarList').get((req, res) => {
   })
 })
 
-inventoryRoute.post("/mesud",  (request, response) => {
+testHouseRoute.post("/mesud",  (request, response) => {
 
   alias=request.body
   // console.log(alias)
@@ -1134,7 +1134,7 @@ inventoryRoute.post("/mesud",  (request, response) => {
 
 
 
-inventoryRoute.post("/deleteMesud",  (request, response) => {
+testHouseRoute.post("/deleteMesud",  (request, response) => {
 
   alias=request.body
   console.log(alias)
@@ -1153,7 +1153,7 @@ inventoryRoute.post("/deleteMesud",  (request, response) => {
 
 });
 
-inventoryRoute.post("/addComment",  (request, response) => {
+testHouseRoute.post("/addComment",  (request, response) => {
 
   alias=request.body
   // console.log(alias)
@@ -1171,7 +1171,7 @@ inventoryRoute.post("/addComment",  (request, response) => {
 
 });
 
-inventoryRoute.post("/deleteComment",  (request, response) => {
+testHouseRoute.post("/deleteComment",  (request, response) => {
 
   alias=request.body
   console.log(alias)
@@ -1190,7 +1190,7 @@ inventoryRoute.post("/deleteComment",  (request, response) => {
 
 });
 
-inventoryRoute.route('/getAllComments').get((req, res) => {
+testHouseRoute.route('/getAllComments').get((req, res) => {
   Comment.find((error, data) => {
     if (error) {
       console.log(error)
@@ -1201,6 +1201,7 @@ inventoryRoute.route('/getAllComments').get((req, res) => {
 })
 
 
-  inventoryRoute.get("/files", controller.getListFiles);
-  inventoryRoute.get("/files/:name", controller.download);
-  inventoryRoute.post("/upload", controller.upload);
+  testHouseRoute.get("/files", controller.getListFiles);
+  testHouseRoute.get("/files/:name", controller.download);
+  testHouseRoute.post("/upload", controller.upload);
+  testHouseRoute.get("/view/:name", controller.view);
