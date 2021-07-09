@@ -30,7 +30,7 @@ app.use('/api', employeeRoute)
 
 var fullUrl = fs.readFileSync('url.txt', 'utf8');
 var url = fullUrl.split(":")[0]
-var portFromTxt = fullUrl.split(":")[1]
+var portFromTxt = fullUrl.split(":")[1] 
 // Create port
 const port = process.env.PORT || portFromTxt;
 global.__basedir = __dirname;
